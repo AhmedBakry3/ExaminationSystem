@@ -21,6 +21,7 @@ namespace Exam_02
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
                 subject?.Exam?.ShowExam();
+                Console.WriteLine();
                 Console.WriteLine($"The Elasped Time = {stopwatch.Elapsed}");
             }
             else
