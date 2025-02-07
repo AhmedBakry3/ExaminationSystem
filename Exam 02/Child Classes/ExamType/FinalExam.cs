@@ -98,8 +98,7 @@ namespace Exam_02.Child_Classes.ExamType
         private void DisplayCorrectAnswers(string[] userAnswers)
         {
             Console.Clear();
-            Console.WriteLine("Your Answers:");
-
+            
             int questionIndex = 0;
 
             foreach (var question in Questions.GetQuestions())
