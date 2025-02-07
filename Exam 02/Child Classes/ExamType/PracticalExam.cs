@@ -1,4 +1,4 @@
-﻿using Exam_02.Base_Classes;
+using Exam_02.Base_Classes;
 using Exam_02.Child_Classes.QuestionType;
 
 namespace Exam_02.Child_Classes.ExamType
@@ -73,36 +73,10 @@ namespace Exam_02.Child_Classes.ExamType
         private void DisplayCorrectAnswers(int[][] userAnswers)
         {
             Console.Clear();
-            Console.WriteLine("Your Answers:");
-
             int questionIndex = 0;
 
             foreach (var question in Questions.GetQuestions())
             {
-                if (question != null)
-                {
-                    Console.WriteLine($"Multiple Choices Question     Mark({question.Mark})");
-                    Console.WriteLine(question.Body); // Display the body of the question
-
-                    if (question.AnswerList != null && question.AnswerList.Length > 0)
-                    {
-                        for (int i = 0; i < question.AnswerList.Length; i++)
-                        {
-                            Console.Write($"{i + 1}. {question.AnswerList[i].AnswerText}         ");
-                        }
-                    }
-
-                    // Display the user selected answers
-                    Console.WriteLine("\nYour Selected Answers:");
-                    foreach (int selectedChoice in userAnswers[questionIndex])
-                    {
-                        if (selectedChoice != 0)
-                        {
-                            Console.WriteLine($"{selectedChoice}. {question?.AnswerList[selectedChoice - 1].AnswerText}");
-                        }
-                    }
-
-                    // Display the correct answer
                     if (question?.RightAnswer != null)
                     {
                         Console.WriteLine($"Correct Answer: {Array.IndexOf(question.AnswerList, question.RightAnswer) + 1}. {question.RightAnswer.AnswerText}");
@@ -118,7 +92,7 @@ namespace Exam_02.Child_Classes.ExamType
                     questionIndex++;
                 }
             }
-        }
+        
         #endregion
 
     }
