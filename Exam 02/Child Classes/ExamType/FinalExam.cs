@@ -1,4 +1,4 @@
-﻿using Exam_02.Base_Classes;
+using Exam_02.Base_Classes;
 using Exam_02.Child_Classes.QuestionType;
 
 namespace Exam_02.Child_Classes.ExamType
@@ -12,6 +12,7 @@ namespace Exam_02.Child_Classes.ExamType
             Console.Clear();
 
             string[] userAnswers = new string[Questions.GetQuestions().Length];
+            int totalMarks = 0, obtainedMarks = 0;
             int questionIndex = 0;
             string? input = string.Empty;
 
@@ -20,7 +21,8 @@ namespace Exam_02.Child_Classes.ExamType
                 if (question != null)
                 {
                     Console.WriteLine($"Question {questionIndex + 1} - Mark({question.Mark})");
-                    Console.WriteLine(question.Body); // Display the body of the question
+                    Console.WriteLine(question.Body);
+                    totalMarks += question.Mark;
 
                     if (question is MCQOneChoice)
                     {
@@ -38,8 +40,14 @@ namespace Exam_02.Child_Classes.ExamType
 
                             if (int.TryParse(input?.Trim(), out int userChoice) && userChoice >= 1 && userChoice <= 4)
                             {
-                                userAnswers[questionIndex] = input.Trim(); 
+                                userAnswers[questionIndex] = input.Trim();
                                 validAnswer = true;
+
+                                // Check if the selected answer is correct and add to obtained marks
+                                if (question.AnswerList[userChoice - 1] == question.RightAnswer)
+                                {
+                                    obtainedMarks += question.Mark;
+                                }
                             }
                             else
                             {
@@ -47,18 +55,24 @@ namespace Exam_02.Child_Classes.ExamType
                             }
                         } while (!validAnswer);
                     }
-                    else if (question is TFQuestion)
+                    else if (question is TFQuestion tfQuestion)
                     {
                         bool validAnswer = false;
                         do
                         {
                             Console.WriteLine("Please choose your answer (T/F):");
-                            input = Console.ReadLine()?.ToUpper();
+                            input = Console.ReadLine()?.ToUpper()?.Trim(); // To handle case insensitivity
 
                             if (input == "T" || input == "F")
                             {
-                                userAnswers[questionIndex] = input; 
+                                userAnswers[questionIndex] = input;
                                 validAnswer = true;
+
+                                // Check if the answer is correct (case insensitive)
+                                if (input == tfQuestion.RightAnswer?.AnswerText?.ToUpper())
+                                {
+                                    obtainedMarks += question.Mark;
+                                }
                             }
                             else
                             {
@@ -75,7 +89,9 @@ namespace Exam_02.Child_Classes.ExamType
                 }
             }
 
+            // Display the correct answers and the final grade after all questions are answered
             DisplayCorrectAnswers(userAnswers);
+            DisplayFinalGrade(totalMarks, obtainedMarks);
         }
 
         // Method to display the correct answers
@@ -93,13 +109,9 @@ namespace Exam_02.Child_Classes.ExamType
                     Console.WriteLine($"Question {questionIndex + 1} - Mark({question.Mark})");
                     Console.WriteLine(question.Body); // Display the body of the question
 
+                    // Display the user's selected answer for each question
                     if (question is MCQOneChoice)
                     {
-                        for (int i = 0; i < question?.AnswerList?.Length; i++)
-                        {
-                            Console.Write($"{i + 1}. {question.AnswerList[i].AnswerText}         ");
-                        }
-
                         Console.WriteLine("\nYour Selected Answer:");
                         Console.WriteLine(userAnswers[questionIndex]);
                     }
@@ -114,7 +126,7 @@ namespace Exam_02.Child_Classes.ExamType
                     {
                         if (question is MCQOneChoice)
                         {
-                            Console.WriteLine($"Correct Answer: {Array.IndexOf(question.AnswerList , question.RightAnswer) + 1}. {question.RightAnswer.AnswerText}");
+                            Console.WriteLine($"Correct Answer: {Array.IndexOf(question.AnswerList, question.RightAnswer) + 1}. {question.RightAnswer.AnswerText}");
                         }
                         else if (question is TFQuestion)
                         {
@@ -132,6 +144,12 @@ namespace Exam_02.Child_Classes.ExamType
                     questionIndex++;
                 }
             }
+        }
+
+        // Method to display the final grade
+        private void DisplayFinalGrade(int totalMarks, int obtainedMarks)
+        {
+            Console.WriteLine($"Your Total Exam Grade: {obtainedMarks} from {totalMarks}");
         }
 
         #endregion
