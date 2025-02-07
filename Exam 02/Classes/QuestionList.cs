@@ -4,15 +4,20 @@ namespace Exam_02.Associated_Classes
 {
     internal class QuestionList
     {
+        #region Attributes
         private Question[] questions;
         private int count;
+        #endregion
 
+         #region Constructors
         public QuestionList(int initialSize = 10)
         {
             questions = new Question[initialSize];
             count = 0;
         }
+         #endregion
 
+         #region Methods
         // Adds a new question to the araay. If the list is full, it resizes the array.
         public void AddQuestion(Question question)
         {
@@ -58,5 +63,7 @@ namespace Exam_02.Associated_Classes
                 }
             }
         }
+        #endregion
+
     }
 }
